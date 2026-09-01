@@ -4,7 +4,7 @@
 // Your data is protected by Firestore Security Rules instead (see README.md).
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyA3HoVB0-HRW-FPhYjTG5Dv58UjBPIhzQc",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
   projectId: "YOUR_PROJECT_ID",
   storageBucket: "YOUR_PROJECT_ID.appspot.com",

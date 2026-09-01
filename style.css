@@ -52,7 +52,8 @@ body {
 h1 {
   font-family: 'Fraunces', serif;
   font-weight: 600;
-  font-size: 26px;
+  font-size: 22px;
+  letter-spacing: 0.3px;
   margin: 0 0 10px;
   color: var(--ink);
 }
@@ -104,7 +105,7 @@ h2 {
 
 .optional { color: var(--ink-soft); font-weight: 400; }
 
-input[type="text"], input[type="email"], textarea {
+input[type="text"], input[type="email"], select, textarea {
   font-family: inherit;
   font-size: 16px;
   padding: 13px 15px;
@@ -116,10 +117,37 @@ input[type="text"], input[type="email"], textarea {
   resize: vertical;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
   outline: 2px solid var(--mustard);
   outline-offset: 1px;
   background: var(--card);
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.choice:hover { border-color: var(--ink-soft); }
+
+.choice input[type="radio"] {
+  accent-color: var(--mustard);
+  width: 18px;
+  height: 18px;
+  flex: none;
 }
 
 /* Fitts's Law: primary action is the largest, closest, easiest target on the page */

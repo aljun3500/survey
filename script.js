@@ -19,14 +19,21 @@ function showPage(pageNum) {
   nextBtn.hidden = pageNum === totalPages;
   submitBtn.hidden = pageNum !== totalPages;
 
-  // Fitts's Law: put the cursor where the user needs it, so there's zero
-  // travel distance to start typing the next answer.
   const activePage = pages.find((p) => Number(p.dataset.page) === pageNum);
-  const firstField = activePage.querySelector('textarea, input');
+  const firstField = activePage.querySelector('input, select, textarea');
   if (firstField) firstField.focus();
 }
 
+function identityIsComplete() {
+  return form.name.value.trim() && form.yearLevel.value && form.section.value.trim();
+}
+
 nextBtn.addEventListener('click', () => {
+  if (currentPage === 1 && !identityIsComplete()) {
+    statusEl.textContent = 'Please fill in your name, year level, and section before continuing.';
+    return;
+  }
+  statusEl.textContent = '';
   if (currentPage < totalPages) {
     currentPage += 1;
     showPage(currentPage);
@@ -34,6 +41,7 @@ nextBtn.addEventListener('click', () => {
 });
 
 backBtn.addEventListener('click', () => {
+  statusEl.textContent = '';
   if (currentPage > 1) {
     currentPage -= 1;
     showPage(currentPage);
@@ -44,14 +52,17 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   statusEl.textContent = '';
 
+  const q3Choice = form.querySelector('input[name="q3"]:checked');
+
   const entry = {
     name: form.name.value.trim(),
+    yearLevel: form.yearLevel.value,
+    section: form.section.value.trim(),
+    q1: form.q1.value.trim(),
+    q2: form.q2.value.trim(),
+    q3: q3Choice ? q3Choice.value : '',
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
-
-  for (let i = 1; i <= 15; i++) {
-    entry[`q${i}`] = form[`q${i}`].value.trim();
-  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Sending...';
@@ -68,5 +79,4 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// Focus the very first field on initial load, so typing can start immediately.
 form.name.focus();

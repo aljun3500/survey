@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Feedback Survey</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="page">
+    <div class="card">
+
+      <header class="card-header">
+        <p class="kicker">A few questions</p>
+        <h1>How was your experience?</h1>
+        <p class="subhead">Takes about a minute. Your answers help us make this better.</p>
+      </header>
+
+      <form id="survey-form" class="survey">
+
+        <div class="question">
+          <label class="q-label" for="name">
+            <span class="q-num">1</span>
+            What's your name?
+          </label>
+          <input type="text" id="name" name="name" placeholder="Jordan Lee" required>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="email">
+            <span class="q-num">2</span>
+            Email <span class="optional">(optional)</span>
+          </label>
+          <input type="email" id="email" name="email" placeholder="jordan@example.com">
+        </div>
+
+        <div class="question">
+          <span class="q-label">
+            <span class="q-num">3</span>
+            How would you rate your experience?
+          </span>
+          <div class="rating" role="radiogroup" aria-label="Rating from 1 to 5">
+            <input type="radio" name="rating" id="r1" value="1" required><label for="r1">1</label>
+            <input type="radio" name="rating" id="r2" value="2"><label for="r2">2</label>
+            <input type="radio" name="rating" id="r3" value="3"><label for="r3">3</label>
+            <input type="radio" name="rating" id="r4" value="4"><label for="r4">4</label>
+            <input type="radio" name="rating" id="r5" value="5"><label for="r5">5</label>
+          </div>
+          <div class="rating-scale">
+            <span>Not great</span>
+            <span>Excellent</span>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="q-label" for="comments">
+            <span class="q-num">4</span>
+            Anything you'd like to tell us? <span class="optional">(optional)</span>
+          </label>
+          <textarea id="comments" name="comments" rows="4" placeholder="Type your thoughts here..."></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn">Send feedback</button>
+        <p id="form-status" class="status" aria-live="polite"></p>
+      </form>
+
+      <div id="thank-you" class="thank-you" hidden>
+        <p class="kicker">Done</p>
+        <h2>Thanks, that's saved.</h2>
+        <p class="subhead">We appreciate you taking the time.</p>
+      </div>
+
+    </div>
+
+    <p class="footer-link"><a href="responses.html">View collected responses →</a></p>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Responses</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="page">
+    <div class="table-wrap">
+      <header class="card-header">
+        <p class="kicker">Results</p>
+        <h1>Survey responses</h1>
+        <p class="subhead">Everything submitted through the form, newest first.</p>
+      </header>
+
+      <div id="responses-container">
+        <p class="empty-state">Loading...</p>
+      </div>
+    </div>
+
+    <p class="footer-link"><a href="index.html">← Back to survey</a></p>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="responses.js"></script>
+</body>
+</html>

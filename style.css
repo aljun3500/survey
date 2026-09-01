@@ -1,14 +1,15 @@
+cat > style.css << 'EOF'
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --paper: #F5F2EA;
-  --ink: #21323D;
-  --ink-soft: #55666F;
-  --mustard: #E3A23D;
-  --card: #FFFFFF;
-  --border: #DCD5C4;
-  --text: #211E1A;
-  --danger: #B5473F;
+  --paper: #17191B;
+  --ink: #ECE8DF;
+  --ink-soft: #A79E8C;
+  --mustard: #EDB55A;
+  --card: #202325;
+  --border: #34383B;
+  --text: #ECE8DF;
+  --danger: #E2776E;
   --radius: 10px;
 }
 
@@ -173,7 +174,7 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover { background: #182027; }
+button[type="submit"]:hover { background: var(--mustard); }
 button[type="submit"]:disabled { opacity: 0.6; cursor: default; }
 
 .status {
@@ -197,7 +198,6 @@ button[type="submit"]:disabled { opacity: 0.6; cursor: default; }
 
 .footer-link a:hover { color: var(--ink); }
 
-/* responses.html table */
 .table-wrap {
   max-width: 760px;
   width: 100%;
@@ -230,10 +230,10 @@ th {
 
 .empty-state {
   color: var(--ink-soft);
-  font-size: 14px;
 }
 
 @media (max-width: 480px) {
   .card, .table-wrap { padding: 28px 22px; }
   h1 { font-size: 24px; }
 }
+EOF

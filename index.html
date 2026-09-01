@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quick Feedback Survey</title>
+<title>College Life Survey</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,56 +12,96 @@
     <div class="card">
 
       <header class="card-header">
-        <p class="kicker">A few questions</p>
-        <h1>How was your experience?</h1>
-        <p class="subhead">Takes about a minute. Your answers help us make this better.</p>
+        <p class="kicker">College Life Survey</p>
+        <h1>Tell us about your college experience</h1>
+        <p class="subhead">15 questions, shown 5 at a time. Answer as much as you'd like.</p>
       </header>
 
       <form id="survey-form" class="survey">
 
         <div class="question">
           <label class="q-label" for="name">
-            <span class="q-num">1</span>
-            What's your name?
+            Your name <span class="optional">(optional)</span>
           </label>
-          <input type="text" id="name" name="name" placeholder="Jordan Lee" required>
+          <input type="text" id="name" name="name" placeholder="Jordan Lee">
         </div>
 
-        <div class="question">
-          <label class="q-label" for="email">
-            <span class="q-num">2</span>
-            Email <span class="optional">(optional)</span>
-          </label>
-          <input type="email" id="email" name="email" placeholder="jordan@example.com">
-        </div>
-
-        <div class="question">
-          <span class="q-label">
-            <span class="q-num">3</span>
-            How would you rate your experience?
-          </span>
-          <div class="rating" role="radiogroup" aria-label="Rating from 1 to 5">
-            <input type="radio" name="rating" id="r1" value="1" required><label for="r1">1</label>
-            <input type="radio" name="rating" id="r2" value="2"><label for="r2">2</label>
-            <input type="radio" name="rating" id="r3" value="3"><label for="r3">3</label>
-            <input type="radio" name="rating" id="r4" value="4"><label for="r4">4</label>
-            <input type="radio" name="rating" id="r5" value="5"><label for="r5">5</label>
+        <div class="survey-page" data-page="1">
+          <div class="question">
+            <label class="q-label" for="q1"><span class="q-num">1</span>How would you describe your college life so far?</label>
+            <textarea id="q1" name="q1" rows="3"></textarea>
           </div>
-          <div class="rating-scale">
-            <span>Not great</span>
-            <span>Excellent</span>
+          <div class="question">
+            <label class="q-label" for="q2"><span class="q-num">2</span>What is the biggest challenge you face as a college student?</label>
+            <textarea id="q2" name="q2" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q3"><span class="q-num">3</span>How do you manage your time between studying and personal life?</label>
+            <textarea id="q3" name="q3" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q4"><span class="q-num">4</span>What is your favorite part about being in college?</label>
+            <textarea id="q4" name="q4" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q5"><span class="q-num">5</span>What is the most difficult subject or experience you have encountered?</label>
+            <textarea id="q5" name="q5" rows="3"></textarea>
           </div>
         </div>
 
-        <div class="question">
-          <label class="q-label" for="comments">
-            <span class="q-num">4</span>
-            Anything you'd like to tell us? <span class="optional">(optional)</span>
-          </label>
-          <textarea id="comments" name="comments" rows="4" placeholder="Type your thoughts here..."></textarea>
+        <div class="survey-page" data-page="2" hidden>
+          <div class="question">
+            <label class="q-label" for="q6"><span class="q-num">6</span>How do you deal with stress and pressure from school?</label>
+            <textarea id="q6" name="q6" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q7"><span class="q-num">7</span>What motivates you to continue studying?</label>
+            <textarea id="q7" name="q7" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q8"><span class="q-num">8</span>How has college changed you as a person?</label>
+            <textarea id="q8" name="q8" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q9"><span class="q-num">9</span>What advice would you give to incoming college students?</label>
+            <textarea id="q9" name="q9" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q10"><span class="q-num">10</span>What are your goals after finishing college?</label>
+            <textarea id="q10" name="q10" rows="3"></textarea>
+          </div>
         </div>
 
-        <button type="submit" id="submit-btn">Send feedback</button>
+        <div class="survey-page" data-page="3" hidden>
+          <div class="question">
+            <label class="q-label" for="q11"><span class="q-num">11</span>How do you make friends and build relationships in college?</label>
+            <textarea id="q11" name="q11" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q12"><span class="q-num">12</span>What is one memorable experience you have had in college?</label>
+            <textarea id="q12" name="q12" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q13"><span class="q-num">13</span>Do you think college life is different from what you expected? Why?</label>
+            <textarea id="q13" name="q13" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q14"><span class="q-num">14</span>How do you balance your school responsibilities and hobbies?</label>
+            <textarea id="q14" name="q14" rows="3"></textarea>
+          </div>
+          <div class="question">
+            <label class="q-label" for="q15"><span class="q-num">15</span>What skills have you learned from being a college student?</label>
+            <textarea id="q15" name="q15" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="pager">
+          <button type="button" id="back-btn" class="btn-secondary" hidden>Back</button>
+          <span id="page-indicator" class="page-indicator">Page 1 of 3</span>
+          <button type="button" id="next-btn" class="btn-primary">Next</button>
+          <button type="submit" id="submit-btn" class="btn-primary" hidden>Send feedback</button>
+        </div>
+
         <p id="form-status" class="status" aria-live="polite"></p>
       </form>
 

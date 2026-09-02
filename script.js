@@ -1,82 +1,177 @@
-const form = document.getElementById('survey-form');
-const statusEl = document.getElementById('form-status');
+const QUESTIONS = [
+  { id: 'q1', prompt: null, text: 'How do financial problems affect your studies and academic performance?' },
+  { id: 'q2', prompt: 'Think about your own experience.', text: 'What are the biggest financial challenges you experience as a college student? Which one affects you the most, and why?' },
+  { id: 'q3', prompt: null, text: 'Have financial difficulties ever caused you to miss classes, activities, or school requirements? If yes, how?' },
+  { id: 'q4', prompt: null, text: 'How do financial problems affect your stress, focus, or motivation as a student?' },
+  { id: 'q5', prompt: 'Think about your own experience.', text: 'What strategies do you use to manage your financial problems while continuing your studies? Which strategy helps you most, and why?' }
+];
+
+const MIN_WORDS = 3;
+
+const screens = {
+  identity: document.getElementById('screen-identity'),
+  question: document.getElementById('screen-question'),
+  review: document.getElementById('screen-review'),
+  done: document.getElementById('screen-done')
+};
+
+const identityStatus = document.getElementById('identity-status');
+const beginBtn = document.getElementById('begin-btn');
+
+const questionContent = document.getElementById('question-content');
+const questionStatus = document.getElementById('question-status');
+const continueBtn = document.getElementById('continue-btn');
+const progressLabel = document.getElementById('progress-label');
+const progressPercent = document.getElementById('progress-percent');
+const progressFill = document.getElementById('progress-fill');
+
+const checkpointOverlay = document.getElementById('checkpoint-overlay');
+const checkpointContinueBtn = document.getElementById('checkpoint-continue-btn');
+
 const submitBtn = document.getElementById('submit-btn');
-const nextBtn = document.getElementById('next-btn');
-const backBtn = document.getElementById('back-btn');
-const pageIndicator = document.getElementById('page-indicator');
-const thankYou = document.getElementById('thank-you');
+const submitStatus = document.getElementById('submit-status');
 
-const pages = Array.from(document.querySelectorAll('.survey-page'));
-const totalPages = pages.length;
-let currentPage = 1;
+let identity = { name: '', yearLevel: '', section: '' };
+let currentIndex = 0;
+const answers = {};
+const questionTimes = {};
+let surveyStartTime = null;
+let questionStartTime = null;
 
-function showPage(pageNum) {
-  pages.forEach((p) => {
-    p.hidden = Number(p.dataset.page) !== pageNum;
+// Only one screen is ever un-hidden at a time. Nothing else is rendered
+// into the DOM until it's needed, so there is no other markup around
+// that could accidentally become visible.
+function showScreen(name) {
+  Object.entries(screens).forEach(([key, el]) => {
+    el.hidden = key !== name;
   });
-  pageIndicator.textContent = `Page ${pageNum} of ${totalPages}`;
-  backBtn.hidden = pageNum === 1;
-  nextBtn.hidden = pageNum === totalPages;
-  submitBtn.hidden = pageNum !== totalPages;
-
-  const activePage = pages.find((p) => Number(p.dataset.page) === pageNum);
-  const firstField = activePage.querySelector('input, select, textarea');
-  if (firstField) firstField.focus();
 }
 
-function identityIsComplete() {
-  return form.name.value.trim() && form.yearLevel.value && form.section.value.trim();
+// The current question's markup is generated fresh each time - there is
+// no pool of pre-built question divs sitting in the page to leak through.
+function renderQuestion(index) {
+  const q = QUESTIONS[index];
+  const promptHtml = q.prompt ? `<p class="reflection-prompt">${q.prompt}</p>` : '';
+
+  questionContent.classList.remove('fade-in');
+  void questionContent.offsetWidth; // restart the animation each time
+  questionContent.innerHTML = `
+    <div class="question">
+      ${promptHtml}
+      <label class="q-label" for="answer">
+        <span class="q-num">${index + 1}</span>${q.text}
+      </label>
+      <textarea id="answer" rows="6" placeholder="Type your answer here..."></textarea>
+    </div>`;
+  questionContent.classList.add('fade-in');
+
+  questionStatus.textContent = '';
+  continueBtn.hidden = true;
+
+  const percent = Math.round(((index + 1) / QUESTIONS.length) * 100);
+  progressLabel.textContent = `Question ${index + 1} of ${QUESTIONS.length}`;
+  progressPercent.textContent = `${percent}%`;
+  progressFill.style.width = `${percent}%`;
+
+  const answerField = document.getElementById('answer');
+  answerField.addEventListener('input', () => {
+    continueBtn.hidden = answerField.value.trim().length === 0;
+  });
+  answerField.focus();
+
+  questionStartTime = Date.now();
 }
 
-nextBtn.addEventListener('click', () => {
-  if (currentPage === 1 && !identityIsComplete()) {
-    statusEl.textContent = 'Please fill in your name, year level, and section before continuing.';
+function wordCount(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+beginBtn.addEventListener('click', () => {
+  const name = document.getElementById('name').value.trim();
+  const yearLevel = document.getElementById('yearLevel').value;
+  const section = document.getElementById('section').value.trim();
+
+  if (!name || !yearLevel || !section) {
+    identityStatus.textContent = 'Please fill in your name, year level, and section before continuing.';
     return;
   }
-  statusEl.textContent = '';
-  if (currentPage < totalPages) {
-    currentPage += 1;
-    showPage(currentPage);
+
+  identity = { name, yearLevel, section };
+  identityStatus.textContent = '';
+
+  surveyStartTime = Date.now();
+  currentIndex = 0;
+  showScreen('question');
+  renderQuestion(currentIndex);
+});
+
+function advanceToNextQuestion() {
+  currentIndex += 1;
+  if (currentIndex < QUESTIONS.length) {
+    renderQuestion(currentIndex);
+  } else {
+    showScreen('review');
+  }
+}
+
+continueBtn.addEventListener('click', () => {
+  const answerField = document.getElementById('answer');
+  const value = answerField.value.trim();
+
+  if (!value || wordCount(value) < MIN_WORDS) {
+    questionStatus.textContent = 'Please take a moment to answer this question before continuing.';
+    return;
+  }
+
+  const q = QUESTIONS[currentIndex];
+  answers[q.id] = value;
+  questionTimes[`${q.id}TimeMs`] = Date.now() - questionStartTime;
+
+  // The reflection checkpoint only appears for the two questions that
+  // carry a "Think about your own experience" prompt (Q2 and Q5).
+  if (q.prompt) {
+    checkpointOverlay.hidden = false;
+  } else {
+    advanceToNextQuestion();
   }
 });
 
-backBtn.addEventListener('click', () => {
-  statusEl.textContent = '';
-  if (currentPage > 1) {
-    currentPage -= 1;
-    showPage(currentPage);
-  }
+checkpointContinueBtn.addEventListener('click', () => {
+  checkpointOverlay.hidden = true;
+  advanceToNextQuestion();
 });
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  statusEl.textContent = '';
+submitBtn.addEventListener('click', async () => {
+  submitStatus.textContent = '';
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
 
-  const q3Choice = form.querySelector('input[name="q3"]:checked');
+  const totalTimeMs = Date.now() - surveyStartTime;
 
   const entry = {
-    name: form.name.value.trim(),
-    yearLevel: form.yearLevel.value,
-    section: form.section.value.trim(),
-    q1: form.q1.value.trim(),
-    q2: form.q2.value.trim(),
-    q3: q3Choice ? q3Choice.value : '',
+    name: identity.name,
+    yearLevel: identity.yearLevel,
+    section: identity.section,
+    q1: answers.q1 || '',
+    q2: answers.q2 || '',
+    q3: answers.q3 || '',
+    q4: answers.q4 || '',
+    q5: answers.q5 || '',
+    ...questionTimes,
+    totalTimeMs,
+    surveyStartedAt: new Date(surveyStartTime).toISOString(),
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-
   try {
     await db.collection('responses').add(entry);
-    form.hidden = true;
-    thankYou.hidden = false;
+    showScreen('done');
   } catch (err) {
     console.error('Error saving response:', err);
-    statusEl.textContent = 'Something went wrong saving your response. Please try again.';
+    submitStatus.textContent = 'Something went wrong saving your response. Please try again.';
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Send feedback';
+    submitBtn.textContent = 'Submit';
   }
 });
 
-form.name.focus();
+document.getElementById('name').focus();

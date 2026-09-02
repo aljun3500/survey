@@ -14,6 +14,8 @@
 
 * { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--paper);
@@ -67,31 +69,27 @@ h2 {
 }
 
 .subhead {
-  margin: 0;
+  margin: 0 0 24px;
   color: var(--ink-soft);
   font-size: 15px;
   max-width: 44ch;
 }
 
-.survey { display: flex; flex-direction: column; gap: 22px; }
-
-.survey-page { display: flex; flex-direction: column; gap: 22px; }
-
-.question { display: flex; flex-direction: column; gap: 10px; }
+.question { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
 
 .q-label {
   display: flex;
   align-items: baseline;
   gap: 10px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text);
 }
 
 .q-num {
   flex: none;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--paper);
   border: 1px solid var(--border);
@@ -103,7 +101,12 @@ h2 {
   justify-content: center;
 }
 
-.optional { color: var(--ink-soft); font-weight: 400; }
+.reflection-prompt {
+  font-weight: 600;
+  color: var(--mustard);
+  font-size: 14px;
+  margin: 0 0 2px;
+}
 
 input[type="text"], input[type="email"], select, textarea {
   font-family: inherit;
@@ -123,50 +126,7 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
   background: var(--card);
 }
 
-.choice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.choice {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 15px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  color: var(--text);
-}
-
-.choice:hover { border-color: var(--ink-soft); }
-
-.choice input[type="radio"] {
-  accent-color: var(--mustard);
-  width: 18px;
-  height: 18px;
-  flex: none;
-}
-
-/* Fitts's Law: primary action is the largest, closest, easiest target on the page */
-.pager {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-}
-
-.page-indicator {
-  font-size: 13px;
-  color: var(--ink-soft);
-  flex: 1;
-  text-align: center;
-  order: 2;
-}
-
-.btn-primary, .btn-secondary {
+.btn-primary {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 16px;
@@ -174,40 +134,22 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
   cursor: pointer;
   border: none;
   min-height: 52px;
-  min-width: 52px;
-}
-
-.btn-primary {
+  width: 100%;
+  padding: 14px 20px;
   background: var(--mustard);
   color: #201804;
-  padding: 14px 28px;
-  flex: 2;
-  order: 3;
 }
 
 .btn-primary:hover { background: #F5C578; }
-.btn-primary:active { transform: scale(0.98); }
+.btn-primary:active { transform: scale(0.99); }
 .btn-primary:disabled { opacity: 0.6; cursor: default; transform: none; }
 
-.btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--ink-soft);
-  padding: 14px 20px;
-  flex: 1;
-  order: 1;
-}
-
-.btn-secondary:hover { color: var(--ink); border-color: var(--ink-soft); background: var(--paper); }
-
 .status {
-  margin: 0;
+  margin: 10px 0 0;
   font-size: 14px;
   min-height: 18px;
   color: var(--danger);
 }
-
-.thank-you { text-align: left; }
 
 .footer-link {
   margin-top: 18px;
@@ -220,6 +162,72 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
 }
 
 .footer-link a:hover { color: var(--ink); }
+
+/* Progress bar */
+.progress-wrap { margin-bottom: 26px; }
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--mustard);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Checkpoint overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.overlay-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 420px;
+  width: 100%;
+  padding: 32px 28px;
+  text-align: center;
+  animation: fadeSlideIn 0.25s ease;
+}
+
+.overlay-text {
+  margin: 0 0 20px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Transitions */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.screen:not([hidden]) { animation: fadeSlideIn 0.3s ease; }
+.fade-in { animation: fadeSlideIn 0.3s ease; }
 
 /* responses.html */
 .table-wrap {
@@ -248,9 +256,7 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
   margin: 0 0 18px;
 }
 
-.qa-pair {
-  margin-bottom: 14px;
-}
+.qa-pair { margin-bottom: 14px; }
 
 .qa-pair .qa-question {
   font-size: 13px;
@@ -260,7 +266,7 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
 }
 
 .qa-pair .qa-answer {
-  margin: 0;
+  margin: 0 0 4px;
   font-size: 15px;
   color: var(--text);
 }
@@ -270,13 +276,14 @@ input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focu
   font-style: italic;
 }
 
-.empty-state {
+.qa-time {
+  font-size: 12px;
   color: var(--ink-soft);
 }
 
+.empty-state { color: var(--ink-soft); }
+
 @media (max-width: 480px) {
   .card, .response-card { padding: 28px 22px; }
-  h1 { font-size: 22px; }
-  .pager { flex-wrap: wrap; }
-  .page-indicator { order: 3; width: 100%; text-align: center; }
+  h1 { font-size: 20px; }
 }

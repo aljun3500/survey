@@ -11,70 +11,63 @@
   <main class="page">
     <div class="card">
 
-      <header class="card-header">
-        <p class="kicker">Quick Survey</p>
-        <h1>HOW FINANCIAL PROBLEMS AFFECT COLLEGE STUDENTS</h1>
-        <p class="subhead">A short survey about the cost of college and how it affects students. Takes about a minute.</p>
-      </header>
+      <div id="screen-identity" class="screen">
+        <header class="card-header">
+          <p class="kicker">Quick Survey</p>
+          <h1>HOW FINANCIAL PROBLEMS AFFECT COLLEGE STUDENTS</h1>
+          <p class="subhead">A short research survey about the cost of college and how it affects students. Takes a few minutes.</p>
+        </header>
 
-      <form id="survey-form" class="survey">
+        <div class="question">
+          <label class="q-label" for="name">Your name</label>
+          <input type="text" id="name" placeholder="Jordan Lee" required>
+        </div>
+        <div class="question">
+          <label class="q-label" for="yearLevel">Year level</label>
+          <select id="yearLevel" required>
+            <option value="" disabled selected>Select your year level</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+            <option value="5th Year">5th Year</option>
+          </select>
+        </div>
+        <div class="question">
+          <label class="q-label" for="section">Section</label>
+          <input type="text" id="section" placeholder="e.g. BSIT-3A" required>
+        </div>
 
-        <div class="survey-page" data-page="1">
-          <div class="question">
-            <label class="q-label" for="name">Your name</label>
-            <input type="text" id="name" name="name" placeholder="Jordan Lee" required>
+        <button type="button" id="begin-btn" class="btn-primary">Begin Survey</button>
+        <p id="identity-status" class="status" aria-live="polite"></p>
+      </div>
+
+      <div id="screen-question" class="screen" hidden>
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <span id="progress-label" class="progress-label">Question 1 of 5</span>
+            <span id="progress-percent" class="progress-percent">20%</span>
           </div>
-          <div class="question">
-            <label class="q-label" for="yearLevel">Year level</label>
-            <select id="yearLevel" name="yearLevel" required>
-              <option value="" disabled selected>Select your year level</option>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
-              <option value="5th Year">5th Year</option>
-            </select>
-          </div>
-          <div class="question">
-            <label class="q-label" for="section">Section</label>
-            <input type="text" id="section" name="section" placeholder="e.g. BSIT-3A" required>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill" style="width: 20%"></div>
           </div>
         </div>
 
-        <div class="survey-page" data-page="2" hidden>
-          <div class="question">
-            <label class="q-label" for="q1"><span class="q-num">1</span>What kind of financial assistance would help you most as a college student?</label>
-            <textarea id="q1" name="q1" rows="3"></textarea>
-          </div>
-          <div class="question">
-            <label class="q-label" for="q2"><span class="q-num">2</span>What suggestions can you give to help college students experiencing financial difficulties?</label>
-            <textarea id="q2" name="q2" rows="3"></textarea>
-          </div>
-          <div class="question">
-            <span class="q-label"><span class="q-num">3</span>Which of the following expenses is the most difficult for you to afford?</span>
-            <div class="choice-list" role="radiogroup" aria-label="Most difficult expense">
-              <label class="choice"><input type="radio" name="q3" value="Tuition and school fees">Tuition and school fees</label>
-              <label class="choice"><input type="radio" name="q3" value="Books and school supplies">Books and school supplies</label>
-              <label class="choice"><input type="radio" name="q3" value="Food and daily allowance">Food and daily allowance</label>
-              <label class="choice"><input type="radio" name="q3" value="Transportation">Transportation</label>
-              <label class="choice"><input type="radio" name="q3" value="Rent / housing">Rent / housing</label>
-              <label class="choice"><input type="radio" name="q3" value="Utilities (electricity, water, internet)">Utilities (electricity, water, internet)</label>
-              <label class="choice"><input type="radio" name="q3" value="Personal / miscellaneous expenses">Personal / miscellaneous expenses</label>
-            </div>
-          </div>
-        </div>
+        <div id="question-content"></div>
 
-        <div class="pager">
-          <button type="button" id="back-btn" class="btn-secondary" hidden>Back</button>
-          <span id="page-indicator" class="page-indicator">Page 1 of 2</span>
-          <button type="button" id="next-btn" class="btn-primary">Next</button>
-          <button type="submit" id="submit-btn" class="btn-primary" hidden>Send feedback</button>
-        </div>
+        <p id="question-status" class="status" aria-live="polite"></p>
+        <button type="button" id="continue-btn" class="btn-primary" hidden>Continue</button>
+      </div>
 
-        <p id="form-status" class="status" aria-live="polite"></p>
-      </form>
+      <div id="screen-review" class="screen" hidden>
+        <p class="kicker">Almost done</p>
+        <h2>Ready to submit</h2>
+        <p class="subhead">All 5 answers are recorded. Click submit to save your response.</p>
+        <button type="button" id="submit-btn" class="btn-primary">Submit</button>
+        <p id="submit-status" class="status" aria-live="polite"></p>
+      </div>
 
-      <div id="thank-you" class="thank-you" hidden>
+      <div id="screen-done" class="screen" hidden>
         <p class="kicker">Done</p>
         <h2>Thanks, that's saved.</h2>
         <p class="subhead">We appreciate you taking the time.</p>
@@ -84,6 +77,13 @@
 
     <p class="footer-link"><a href="responses.html">View collected responses →</a></p>
   </main>
+
+  <div id="checkpoint-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <p class="overlay-text">This question is asking about your personal experience. Please make sure your answer reflects what you actually think.</p>
+      <button type="button" id="checkpoint-continue-btn" class="btn-primary">Continue</button>
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
